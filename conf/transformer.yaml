@@ -1,0 +1,59 @@
+## Where the samples will be written
+save_data: /scratch/work/sarvasm1/av_hubert/ussee/exp/openNMT_id2char/transformer_0.01lr_4enc_dec_layers_6heads_512hidden_clean_nodup_sep
+## Where the vocab(s) will be written
+src_vocab: /scratch/work/sarvasm1/av_hubert/ussee/exp/openNMT_id2char/transformer_0.01lr_4enc_dec_layers_6heads_512hidden_clean_nodup_sep/example.vocab.src
+tgt_vocab: /scratch/work/sarvasm1/av_hubert/ussee/exp/openNMT_id2char/transformer_0.01lr_4enc_dec_layers_6heads_512hidden_clean_nodup_sep/example.vocab.tgt
+# Prevent overwriting existing files in the folder
+overwrite: True
+
+# Corpus opts:
+data:
+    corpus_1:
+        path_src: /scratch/work/sarvasm1/av_hubert/ussee/dump/avhubert_base_lrs3_iter5_output_head/train_0_1_rm_dup
+        path_tgt: /scratch/work/sarvasm1/av_hubert/ussee/dump/train.wrd_clean_tokens_sep
+    valid:
+        path_src: /scratch/work/sarvasm1/av_hubert/ussee/dump/avhubert_base_lrs3_iter5_output_head/valid_0_1_rm_dup
+        path_tgt: /scratch/work/sarvasm1/av_hubert/ussee/dump/valid.wrd_clean_tokens_sep
+
+# batching
+bucket_size: 262144
+world_size: 1
+gpu_ranks: [0]
+num_workers: 2
+batch_size: 128
+valid_batch_size: 128 
+
+# optimization
+model_dtype: "fp16"
+optim: "adam"
+learning_rate: 0.01
+warmup_steps: 2000
+decay_method: "noam"
+adam_beta2: 0.998
+max_grad_norm: 0
+label_smoothing: 0.1
+param_init: 0.0
+param_init_glorot: 'true'
+
+# model
+encoder_type: transformer
+decoder_type: transformer
+position_encoding: true
+enc_layers: 4
+dec_layers: 4
+heads: 8
+hidden_size: 512
+word_vec_size: 512
+transformer_ff: 2048
+dropout_steps: [0]
+dropout: [0.1]
+attention_dropout: [0.1]
+
+  #early_stopping: 5
+  #early_stopping_criteria: accuracy
+# Where to save the checkpoints
+save_model: /scratch/work/sarvasm1/av_hubert/ussee/exp/openNMT_id2char/transformer_0.01lr_4enc_dec_layers_6heads_512hidden_clean_nodup_sep/checkpoints/model
+save_checkpoint_steps: 5000
+train_steps: 200000
+keep_checkpoint: 10
+valid_steps: 5000

@@ -1,0 +1,46 @@
+# toy_model.yaml
+
+## Where the samples will be written
+save_data: /scratch/work/sarvasm1/av_hubert/ussee/exp/openNMT_id2char/avhubert_base_iter4/lstm_0.001lr_500embed_10_early_stop_nodup_sep 
+## Where the vocab(s) will be written
+src_vocab: /scratch/work/sarvasm1/av_hubert/ussee/exp/openNMT_id2char/avhubert_base_iter4/lstm_0.001lr_500embed_10_early_stop_nodup_sep/example.vocab.src
+tgt_vocab: /scratch/work/sarvasm1/av_hubert/ussee/exp/openNMT_id2char/avhubert_base_iter4/lstm_0.001lr_500embed_10_early_stop_nodup_sep/example.vocab.tgt
+# Prevent overwriting existing files in the folder
+overwrite: True
+
+# Corpus opts:
+data:
+    corpus_1:
+        path_src: /scratch/work/sarvasm1/av_hubert/ussee/dump/avhubert_base_lrs3_iter4_output_head/labels/train_0_1_rm_dup
+        path_tgt: /scratch/work/sarvasm1/av_hubert/ussee/dump/train.wrd_tokens_sep
+    valid:
+        path_src: /scratch/work/sarvasm1/av_hubert/ussee/dump/avhubert_base_lrs3_iter4_output_head/labels/valid_0_1_rm_dup
+        path_tgt: /scratch/work/sarvasm1/av_hubert/ussee/dump/valid.wrd_tokens_sep
+
+# Train on a single GPU
+seed: 1234
+world_size: 1
+gpu_ranks: [0]
+
+
+optim: adam
+
+
+batch_size: 256
+  #batch_type: tokens
+  #normalization: tokens
+learning_rate: 0.001
+dropout: 0.1
+label_smoothing: 0.1
+
+param_init: 0.0
+param_init_glorot: 'true'
+position_encoding: 'true'
+early_stopping: 10
+early_stopping_criteria: accuracy
+# Where to save the checkpoints
+save_model: /scratch/work/sarvasm1/av_hubert/ussee/exp/openNMT_id2char/avhubert_base_iter4/lstm_0.001lr_500embed_10_early_stop_nodup_sep/checkpoints/model
+save_checkpoint_steps: 500
+train_steps: 50000
+keep_checkpoint: 10
+valid_steps: 500
