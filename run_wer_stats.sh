@@ -1,4 +1,5 @@
 #!/bin/bash
+# Helping script for printing WER statistics from experiments, removing the need to go through them manually
 
 #SBATCH --time=1:00:00
 #SBATCH --mem=16G
@@ -20,9 +21,6 @@ HYP=("avhubert_base_iter4/lstm_0.001lr_1024embed_1024hidden_sent_norm_nodup_sep/
 "avhubert_large_iter5/lstm_0.001lr_500embed_10_early_stop_nodup_sep/test_0_1_predicted_model_step_7000_block_ngram_repeat_0_beam_size_15" 
 "avhubert_base_iter5/lstm_0.001lr_10early_stop_1024embed_1024hidden_nodup_sep/test_0_1_predicted_model_step_7500_block_ngram_repeat_0" 
 "avhubert_base_iter5/lstm_0.001lr_10early_stop_nodup_sep_256batch/test_0_1_predicted_model_step_7500_block_ngram_repeat_0_beam_size_15")
-
-
-
 
 for i in "${!HYP[@]}"
 do
