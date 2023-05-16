@@ -1,9 +1,10 @@
 #!/bin/bash
 #SBATCH --time=10:00:00
-#SBATCH --mem=16G
+#SBATCH --mem-per-cpu=16G
 #SBATCH --gres=gpu:1
-#SBATCH --output=finetune_av_base_iter4.out
-#SBATCH --job-name=finetune_av_base_iter4
+#SBATCH --cpus-per-task=2
+#SBATCH --output=finetune_av_large_iter5.out
+#SBATCH --job-name=finetune_av_large_iter5
 #SBATCH -n 1
 
 
@@ -21,13 +22,13 @@ datadir="/m/teamwork/t40511_asr/c/LRS3-TED/lrs3/30h_data"
 labeldir="/m/teamwork/t40511_asr/c/LRS3-TED/lrs3/30h_data"
 
 # models
-tokenizer="/m/teamwork/t40511_asr/c/LRS3-TED/lrs3/spm5000/spm_unigram5000.model"
-finetuning_model_path="/scratch/work/sarvasm1/av_hubert/models/base_lrs3_iter4.pt"
+tokenizer="/m/teamwork/t40511_asr/c/LRS3-TED/lrs3/spm1000/spm_unigram1000.model"
+finetuning_model_path="/scratch/work/sarvasm1/av_hubert/models/large_lrs3_iter5.pt"
 
 # config and experiments
 conf_path="/scratch/work/sarvasm1/av_hubert/avhubert/conf/av-finetune"
-conf_name="base_lrs3_30h.yaml"
-exp="finetune_AV_lrs3_base_iter4_5000vocab"
+conf_name="large_lrs3_30h.yaml"
+exp="finetune_AV_lrs3_large_iter5_1000vocab"
 
 start_stage=0
 stop_stage=1
@@ -55,7 +56,7 @@ if [ ${start_stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
 
 	# configuration and result dir
 	decode_conf_name="s2s_decode.yaml"
-	decode_dir=${EXP_PATH}/${exp}/decode_av/s2s
+	decode_dir=${EXP_PATH}/${exp}/decode_AV/s2s
 	
 	mkdir -pv  ${decode_dir}
 

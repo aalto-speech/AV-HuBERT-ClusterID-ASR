@@ -32,7 +32,7 @@ nshard=1
 
 
 # stage 3
-vocab_size=5000
+vocab_size=1000
 
 
 if [ ${start_stage} -le 0 ] && [ ${stop_stage} -ge 0 ]; then
