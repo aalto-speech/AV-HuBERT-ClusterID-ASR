@@ -15,26 +15,29 @@ RUN_PATH="/scratch/work/sarvasm1/av_hubert/avhubert/clustering"
 TOOLS="/scratch/work/sarvasm1/tools"
 EXP_PATH="/scratch/work/sarvasm1/AV-HuBERT-ClusterID-ASR/exp"
 
-start_stage=0
-stop_stage=0
-
 tsv_dir="/m/teamwork/t40511_asr/c/LRS3-TED/lrs3/30h_data"
 model="large_lrs3_iter5" 											# type of a model
 ckpt_path="/scratch/work/sarvasm1/av_hubert/models/${model}.pt"  	# path to a model checkpoint
-split="test" 														# dataset split to exctract features from
+# dataset split to exctract features from
+split="valid"
 nshard=1
-rank=0
-is_mfcc=false 														# features to cluster on
-layer=-1															# '-1' to extract labels from output head, otherwise 'layer number' to extract features from 
 
-# Create experiment folder name
+rank=0
+# features to cluster on
+is_mfcc=false
+# "k_means" for doing k_means on top of the avhubert features, "cluster_ids" to extract clusters from output layer
+extract="k_means" 
+# '-1' to extract labels from output head, otherwise 'layer number' to extract features from
+layer=12
+
+# Create experiment folder name where the clusters will be saved
 if [ ${is_mfcc} == true ]; then
 	exp_dir="${EXP_PATH}/clustering/mfcc"
 else
-	if [ ${layer} -eq -1 ]; then
-		exp_dir="${EXP_PATH}/clustering/avhubert_${model}_output_head"
+	if [ "${extract}" == "cluster_ids" ]; then
+		exp_dir="${EXP_PATH}/clustering/avhubert_${model}_${layer}_layer_AVHubertIDs"
 	else
-		exp_dir="${EXP_PATH}/clustering/avhubert_${model}_${layer}_layer"
+		exp_dir="${EXP_PATH}/clustering/avhubert_${model}_${layer}_layer_feat_kmeans"
 	fi
 fi
 lab_dir="${exp_dir}/labels"
@@ -44,9 +47,10 @@ mkdir -pv ${lab_dir}
 
 cd ${RUN_PATH}
 
-extract="cluster_ids" # "k_means" for doing k_means on top of the avhubert features, "cluster_ids" to extract clusters from output layer
-
 if [[ ${extract} == "k_means" ]]; then
+	start_stage=0
+	stop_stage=3
+
 	# variable definition
 	km_path="${exp_dir}/k_means_model"
 	n_cluster=100
@@ -62,13 +66,28 @@ if [[ ${extract} == "k_means" ]]; then
 		fi
 	fi
 	if [ ${start_stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
-		echo "Stage 1: Performing k-means clustering."
-		python learn_kmeans.py ${exp_dir}/feats ${split} ${nshard} ${km_path} ${n_cluster} --percent 0.1 
+		if [ ${split} == "train" ]; then
+			echo "Stage 1: Performing k-means clustering."
+			python learn_kmeans.py ${exp_dir}/feats ${split} ${nshard} ${km_path} ${n_cluster} --percent 0.1 
+		else
+			echo "Skipping training the k-means model for ${split} split."
+		fi
 	fi
 
 	if [ ${start_stage} -le 2 ] && [ ${stop_stage} -ge 2 ]; then
 		echo "Stage 2: Apply learned k-means."
 		python dump_km_label.py ${exp_dir}/feats ${split} ${km_path} ${nshard} ${rank} ${lab_dir}
+
+	fi
+
+	if [ ${start_stage} -le 3 ] && [ ${stop_stage} -ge 3 ]; then
+		echo "Stage 3: Dump cluster IDs from numpy to text file"
+		# converts stored binary to text file where each line is sentence of avhubert cluster IDs
+		file_name="${split}_${rank}_${nshard}"
+		
+		python /scratch/work/sarvasm1/AV-HuBERT-ClusterID-ASR/src/get_labels.py --feats ${exp_dir}/labels/${file_name}.km \
+																		--type "kmeans" \
+																		--labels ${lab_dir}/${file_name}
 
 	fi
 fi

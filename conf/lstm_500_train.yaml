@@ -1,10 +1,10 @@
 # toy_model.yaml
 
 ## Where the samples will be written
-save_data: /scratch/work/sarvasm1/AV-HuBERT-ClusterID-ASR/exp/openNMT_id2char/kmeans_avhubert_base_iter5/lstm_0.001lr_1024embed_1024hidden_sent_norm_nodup_sep 
+save_data: /scratch/work/sarvasm1/AV-HuBERT-ClusterID-ASR/exp/openNMT_id2char/kmeans_avhubert_base_iter5/lstm_0.001lr_500embed_10_early_stop_nodup_sep 
 ## Where the vocab(s) will be written
-src_vocab: /scratch/work/sarvasm1/AV-HuBERT-ClusterID-ASR/exp/openNMT_id2char/kmeans_avhubert_base_iter5/lstm_0.001lr_1024embed_1024hidden_sent_norm_nodup_sep/example.vocab.src
-tgt_vocab: /scratch/work/sarvasm1/AV-HuBERT-ClusterID-ASR/exp/openNMT_id2char/kmeans_avhubert_base_iter5/lstm_0.001lr_1024embed_1024hidden_sent_norm_nodup_sep/example.vocab.tgt
+src_vocab: /scratch/work/sarvasm1/AV-HuBERT-ClusterID-ASR/exp/openNMT_id2char/kmeans_avhubert_base_iter5/lstm_0.001lr_500embed_10_early_stop_nodup_sep/example.vocab.src
+tgt_vocab: /scratch/work/sarvasm1/AV-HuBERT-ClusterID-ASR/exp/openNMT_id2char/kmeans_avhubert_base_iter5/lstm_0.001lr_500embed_10_early_stop_nodup_sep/example.vocab.tgt
 # Prevent overwriting existing files in the folder
 overwrite: True
 
@@ -18,14 +18,17 @@ data:
         path_tgt: /scratch/work/sarvasm1/AV-HuBERT-ClusterID-ASR/dump/valid.wrd_tokens_sep
 
 # Train on a single GPU
+seed: 1234
 world_size: 1
 gpu_ranks: [0]
-seed: 1234
 
-# Train configs 
+
 optim: adam
 
-batch_size: 512
+
+batch_size: 256
+  #batch_type: tokens
+  #normalization: tokens
 learning_rate: 0.001
 dropout: 0.1
 label_smoothing: 0.1
@@ -33,20 +36,10 @@ label_smoothing: 0.1
 param_init: 0.0
 param_init_glorot: 'true'
 position_encoding: 'true'
-  #normalization: tokens
 early_stopping: 10
 early_stopping_criteria: accuracy
-
-# model configs
-src_word_vec_size: 1024
-tgt_word_vec_size: 1024
-
-enc_hid_size: 1024
-dec_hid_size: 1024
-model_dtype: fp16
-
 # Where to save the checkpoints
-save_model: /scratch/work/sarvasm1/AV-HuBERT-ClusterID-ASR/exp/openNMT_id2char/kmeans_avhubert_base_iter5/lstm_0.001lr_1024embed_1024hidden_sent_norm_nodup_sep/checkpoints/model
+save_model: /scratch/work/sarvasm1/AV-HuBERT-ClusterID-ASR/exp/openNMT_id2char/kmeans_avhubert_base_iter5/lstm_0.001lr_500embed_10_early_stop_nodup_sep/checkpoints/model
 save_checkpoint_steps: 500
 train_steps: 50000
 keep_checkpoint: 10

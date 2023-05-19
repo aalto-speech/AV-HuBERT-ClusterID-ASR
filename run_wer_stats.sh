@@ -28,7 +28,8 @@ do
 							 --ref ${BASE_DUMPDIR}/test.wrd > ${BASE_EXPDIR}/${HYP[i]}_jiwer_stats
     echo ${HYP[i]}
     tail -n 8 ${BASE_EXPDIR}/${HYP[i]}_jiwer_stats | head -n 2
-    echo "======================================"
+    tail -n 2 ${BASE_EXPDIR}/${HYP[i]}_metric
+    echo "----------------------------------"
 done
 
 
