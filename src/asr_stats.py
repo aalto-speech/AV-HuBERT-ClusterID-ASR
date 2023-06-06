@@ -26,25 +26,9 @@ def compute_error_rates(hyp_list, ref_list):
     new_hyp_list  = []
     new_ref_list  = []
 
-    trim = False
-    #for src, tgt in zip(pred_list, target_list):
-    #    s_len = len(src)
-    #    t_len = len(tgt)
-    #    print("PRED  : ", src)
-    #    print("TARGET: ", tgt)
-    #    wer_tmp = torchmetrics.functional.word_error_rate(src, tgt)
-    #    cer_tmp = torchmetrics.functional.char_error_rate(src, tgt)
-    #    print(f"WER: {wer_tmp}%, CER: {cer_tmp}% ")
-    #    print("================================================")
-
-    #wer = j_wer(pred_list, target_list)
-    #cer = j_cer(pred_list, target_list)
-    #print("jiwer  : ", wer, cer)
-
     out = jiwer.process_words(ref_list, hyp_list)
 
     print(jiwer.visualize_alignment(out))
-    return None, None
     return wer, cer
 
 

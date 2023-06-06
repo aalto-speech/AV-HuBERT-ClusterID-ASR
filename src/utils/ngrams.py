@@ -24,7 +24,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--labels', type=str, "Path to file with labels or text")
     parser.add_argument('--ngram', type=int, default=1)
-    parser.add_argument('--format', type=str, default="id" choices=["char", "id"], help="If set to char some things such as \"'\" are removed)
+    parser.add_argument('--format', type=str, default="id", choices=["char", "id"], help="If set to char some things such as \"'\" are removed")
     parser.add_argument('--exp_dir', type=str, "Path to directory to store the results")
 
     args = parser.parse_args()
