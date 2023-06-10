@@ -4,16 +4,15 @@
 #SBATCH --mem=16G
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=2
-#SBATCH --output=lstm_1024_kmeans_base5.log
-#SBATCH --job-name=lstm_1024_kmeans_base5
+#SBATCH --output=lstm_1024_kmeans_large5.log
+#SBATCH --job-name=lstm_1024_kmeans_large5
 
 module load miniconda
 source activate avhubert
 
-#dumpdir="/scratch/work/sarvasm1/AV-HuBERT-ClusterID-ASR/dump/avhubert_large_lrs3_iter5_output_head/"
-EXP_PATH="/scratch/work/sarvasm1/AV-HuBERT-ClusterID-ASR/exp/openNMT_id2char/"
+EXP_PATH="exp/openNMT_id2char/"
 
-exp_dir="${EXP_PATH}/kmeans_avhubert_base_iter5/lstm_0.001lr_1024embed_1024hidden_sent_norm_nodup_sep"
+exp_dir="${EXP_PATH}/kmeans_avhubert_large_iter5/lstm_0.001lr_1024embed_1024hidden_sent_norm_nodup_sep"
 conf="conf/lstm_train.yaml"
 
 mkdir -pv ${exp_dir}

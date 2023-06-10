@@ -4,9 +4,16 @@ Training small LSTM model to produce text from cluster IDs extracted from AV-HuB
 - download and set up working AV-HuBERT directory as described in https://github.com/facebookresearch/av_hubert 
 - have LRS3 data 
 - clone this directory (change paths to data and other files in bash scripts)
-
+- create symbolic links to following:
+```
+ln -s /path/to/lrs3_dataset lrs3_dataset
+ln -s /path/to/avhubert/repository avhubert 
+ln -s /path/to/avhubert/pretrained/models pretrained_models
+ln -s /path/to/data/preparation/tools tools
+```
 ## Prepare the data
-Change paths in the script to match you working dir. Stages of data preparation are described in https://github.com/facebookresearch/av_hubert/tree/main/avhubert/preparation "**LRS3 Preprocessing**" part
+Stages of data preparation are described in https://github.com/facebookresearch/av_hubert/tree/main/avhubert/preparation "**LRS3 Preprocessing**" part
+Download models for the face detection (http://dlib.net/files/mmod_human_face_detector.dat.bz2) and landmark prediction (http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2) and change path variable **TOOLS** in the script to dir containing these models.
 ```
 bash run_lrs3_dataprep.sh
 ```

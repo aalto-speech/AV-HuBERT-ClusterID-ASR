@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --time=8:00:00
+#SBATCH --time=6:00:00
 #SBATCH --mem=8G
 #SBATCH --output=dataprep_landmarks_xae.out
 #SBATCH --job-name=landmarks_xae
@@ -10,8 +10,9 @@ module load ffmpeg
 
 source activate avhubert
 
-PREP_PATH="/scratch/work/sarvasm1/av_hubert/avhubert/preparation"
-TOOLS="/scratch/work/sarvasm1/tools"
+PROJ_DIR=$(pwd)
+PREP_PATH="avhubert/preparation"
+TOOLS="${PROJ_DIR}/tools" # path to landmark and face predictor models
 
 
 cd $PREP_PATH
@@ -23,7 +24,7 @@ file_prefix=xae
 start_stage=3
 stop_stage=3
 
-lrs3=/m/teamwork/t40511_asr/c/LRS3-TED/lrs3
+lrs3="${PROJ_DIR}/lrs3_dataset"
 ffmpeg_path=$(which ffmpeg)
 landmark_dir=landmark
 rank=0
@@ -76,5 +77,5 @@ if [ ${start_stage} -le 3 ] && [ ${stop_stage} -ge 3 ]; then
 
     python lrs3_manifest.py --lrs3 ${lrs3} \
                             --vocab-size ${vocab_size} \
-                            --valid-ids /scratch/work/sarvasm1/av_hubert/avhubert/preparation/data/lrs3-valid.id 
+                            --valid-ids "${PROJ_DIR}/avhubert/preparation/data/lrs3-valid.id"
 fi

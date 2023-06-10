@@ -11,13 +11,14 @@ module load miniconda
 source activate avhubert
 module load openblas/0.3.7-gcc-6.5.0-openmp 
 
-RUN_PATH="/scratch/work/sarvasm1/av_hubert/avhubert/clustering"
-TOOLS="/scratch/work/sarvasm1/tools"
-EXP_PATH="/scratch/work/sarvasm1/AV-HuBERT-ClusterID-ASR/exp"
+RUN_PATH="avhubert/clustering"
+PROJ_DIR=$(pwd)
+TOOLS="${PROJ_DIR}/tools"
+EXP_PATH="$(pwd)/exp"
 
-tsv_dir="/m/teamwork/t40511_asr/c/LRS3-TED/lrs3/30h_data"
+tsv_dir="${PROJ_DIR}/lrs3_dataset/30h_data"
 model="large_lrs3_iter5" 											# type of a model
-ckpt_path="/scratch/work/sarvasm1/av_hubert/models/${model}.pt"  	# path to a model checkpoint
+ckpt_path="${PROJ_DIR}/pretrained_models/${model}.pt"  	# path to a model checkpoint
 # dataset split to exctract features from
 split="valid"
 nshard=1
@@ -28,7 +29,7 @@ is_mfcc=false
 # "k_means" for doing k_means on top of the avhubert features, "cluster_ids" to extract clusters from output layer
 extract="k_means" 
 # '-1' to extract labels from output head, otherwise 'layer number' to extract features from
-layer=12
+layer=3
 
 # Create experiment folder name where the clusters will be saved
 if [ ${is_mfcc} == true ]; then
@@ -85,7 +86,7 @@ if [[ ${extract} == "k_means" ]]; then
 		# converts stored binary to text file where each line is sentence of avhubert cluster IDs
 		file_name="${split}_${rank}_${nshard}"
 		
-		python /scratch/work/sarvasm1/AV-HuBERT-ClusterID-ASR/src/get_labels.py --feats ${exp_dir}/labels/${file_name}.km \
+		python ${PROJ_DIR}/src/get_labels.py --feats ${exp_dir}/labels/${file_name}.km \
 																		--type "kmeans" \
 																		--labels ${lab_dir}/${file_name}
 
@@ -94,10 +95,10 @@ fi
 
 if [ "${extract}" == "cluster_ids" ]; then
 	echo "Stage 0: Exctracting labels from output layer of the model."
-	python dump_hubert_labels.py ${tsv_dir} ${split} ${ckpt_path} ${layer} ${nshard} ${rank} ${exp_dir}/feats --user_dir "/scratch/work/sarvasm1/av_hubert/avhubert"
+	python dump_hubert_labels.py ${tsv_dir} ${split} ${ckpt_path} ${layer} ${nshard} ${rank} ${exp_dir}/feats --user_dir "../"
 	file_name="${split}_${rank}_${nshard}"
 	# converts stored binary to text file where each line is sentence of avhubert cluster IDs
-	python /scratch/work/sarvasm1/AV-HuBERT-ClusterID-ASR/src/get_labels.py --feats ${exp_dir}/feats/${file_name}.npy \
+	python ${PROJ_DIR}/src/get_labels.py --feats ${exp_dir}/feats/${file_name}.npy \
 																	--lens ${exp_dir}/feats/${file_name}.len  \
 																	--labels ${lab_dir}/${file_name}
 fi

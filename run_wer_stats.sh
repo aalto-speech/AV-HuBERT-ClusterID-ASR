@@ -11,8 +11,9 @@
 module load miniconda
 source activate avhubert
 
-BASE_DUMPDIR="/scratch/work/sarvasm1/AV-HuBERT-ClusterID-ASR/dump"
-BASE_EXPDIR="/scratch/work/sarvasm1/AV-HuBERT-ClusterID-ASR/exp/openNMT_id2char"
+
+BASE_DUMPDIR="dump"
+BASE_EXPDIR="exp/openNMT_id2char"
 
 src_clusters="${BASE_DUMPDIR}/avhubert_large_lrs3_iter5_output_head/labels/test_0_1_rm_dup"
 HYP=("avhubert_base_iter4/lstm_0.001lr_1024embed_1024hidden_sent_norm_nodup_sep/test_0_1_predicted_model_step_6000_block_ngram_repeat_0_beam_size_15" 

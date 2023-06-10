@@ -10,15 +10,12 @@
 module load miniconda
 source activate avhubert
 
-BASE_DUMPDIR="/scratch/work/sarvasm1/AV-HuBERT-ClusterID-ASR/dump"
-BASE_EXPDIR="/scratch/work/sarvasm1/AV-HuBERT-ClusterID-ASR/exp/openNMT_id2char"
+BASE_DUMPDIR="dump"
+BASE_EXPDIR="exp/openNMT_id2char/kmeans_avhubert_large_iter5"
 
-src_clusters="${BASE_DUMPDIR}/avhubert_large_lrs3_iter5_output_head/labels/test_0_1_rm_dup"
-exp_dirs=("avhubert_large_iter5/lstm_0.001lr_1024embed_1024hidden_sent_norm_nodup_sep" "avhubert_large_iter5/lstm_0.001lr_500embed_10_early_stop_nodup_sep")
-models=("model_step_6500" "model_step_7000")
-#exp_dirs=("lstm_0.001lr_early_stop_clean_nodup_sep")
-#models=("model_step_4000")
-#confs=("lstm_train.yaml" "fix_train_rm_dup_sep_model.yaml")
+src_clusters="${BASE_DUMPDIR}/avhubert_large_lrs3_iter5_12_layer_feat_kmeans/test_0_1_rm_dup"
+exp_dirs=("lstm_0.001lr_1024embed_1024hidden_sent_norm_nodup_sep" "lstm_0.001lr_500embed_10_early_stop_nodup_sep")
+models=("model_step_6000" "model_step_7000")
 
 block_repeat=0
 beam_size=15

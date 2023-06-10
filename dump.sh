@@ -1,7 +1,7 @@
 #!/bin/bash
 
-DUMP_PATH="/scratch/work/sarvasm1/AV-HuBERT-ClusterID-ASR/dump"
-EXP_PATH="/scratch/work/sarvasm1/AV-HuBERT-ClusterID-ASR/exp/clustering"
+DUMP_PATH="dump"
+EXP_PATH="exp/clustering"
 
 
 exp="avhubert_large_lrs3_iter5_12_layer_feat_kmeans"

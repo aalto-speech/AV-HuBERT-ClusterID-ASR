@@ -33,17 +33,23 @@ def compute_error_rates(pred_list, target_list):
         t_len = len(tgt)
         print("PRED  : ", src)
         print("TARGET: ", tgt)
+        wer_tmp = j_wer(tgt, src)
+        cer_tmp = j_cer(tgt, src)
+        print(f"jiwer        -> WER: {wer_tmp*100}%, CER: {cer_tmp*100}% ")
         wer_tmp = torchmetrics.functional.word_error_rate(src, tgt)
         cer_tmp = torchmetrics.functional.char_error_rate(src, tgt)
-        print(f"WER: {wer_tmp}%, CER: {cer_tmp}% ")
+        print(f"torchmetrics -> WER: {wer_tmp*100}%, CER: {cer_tmp*100}% ")
         print("================================================")
 
+    print("Test set:")
     wer = j_wer(target_list, pred_list)
     cer = j_cer(target_list, pred_list)
-    print("jiwer  : ", wer, cer)
+    #print("jiwer  : ", wer, cer)
+    print(f"jiwer        -> WER: {wer*100}%, CER: {cer*100}% ")
     wer = torchmetrics.functional.word_error_rate(pred_list, target_list)
     cer = torchmetrics.functional.char_error_rate(pred_list, target_list)
-    print("pytorch: ", wer, cer)
+    #print("pytorch: ", wer, cer)
+    print(f"torchmetrics -> WER: {wer*100}%, CER: {cer*100}% ")
     return wer, cer
 
 
