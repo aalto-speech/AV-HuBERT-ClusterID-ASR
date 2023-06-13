@@ -19,8 +19,6 @@ cd ${HUBERT_PATH}
 export HYDRA_FULL_ERROR=1
 
 # data
-#datadir="/m/teamwork/t40511_asr/c/LRS3-TED/lrs3/30h_data"
-#labeldir="/m/teamwork/t40511_asr/c/LRS3-TED/lrs3/30h_data"
 datadir="${PROJ_PATH}/lrs3_dataset/30h_data"
 labeldir="${PROJ_PATH}/lrs3_dataset/30h_data"
 
